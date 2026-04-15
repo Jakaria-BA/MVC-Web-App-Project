@@ -1,0 +1,97 @@
+@model IEnumerable<LibraryMVC.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<div class="container mt-4">
+    <h1>Feedback</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Submit Feedback</a>
+    </p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (ViewBag.BookId != null)
+    {
+        <p class="text-muted">Showing feedback for: <a asp-controller="Book" asp-action="Details" asp-route-id="@ViewBag.BookId" class="fw-bold">Book #@ViewBag.BookId</a></p>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary mb-2">Show All Feedback</a>
+    }
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Book)</th>
+                <th>@Html.DisplayNameFor(model => model.UserEmail)</th>
+                <th>@Html.DisplayNameFor(model => model.Comment)</th>
+                <th>@Html.DisplayNameFor(model => model.Rating)</th>
+                <th>@Html.DisplayNameFor(model => model.IsApproved)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Book" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayFor(modelItem => item.Book.Title)</a></td>
+                    <td>@Html.DisplayFor(modelItem => item.UserEmail)</td>
+                    <td>
+                        @if (item.Comment.Length > 50)
+                        {
+                            @item.Comment.Substring(0, 50)<text>...</text>
+                        }
+                        else
+                        {
+                            @item.Comment
+                        }
+                    </td>
+                    <td>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            @if (i <= item.Rating)
+                            {
+                                <span class="text-warning">&#9733;</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">&#9734;</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsApproved)
+                        {
+                            <span class="badge bg-success">Approved</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                    </td>
+                    <td>@item.CreatedAt.ToString("MMM dd, yyyy")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        @if (!item.IsApproved)
+                        {
+                            <form asp-action="Approve" asp-route-id="@item.Id" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">No feedback found.</p>
+    }
+</div>

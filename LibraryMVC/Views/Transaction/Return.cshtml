@@ -1,0 +1,51 @@
+@model LibraryMVC.Models.Transaction
+
+@{
+    ViewData["Title"] = "Return Book";
+}
+
+<div class="container mt-4">
+    <h1>Return Book</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Transaction Details</h5>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Book</dt>
+                <dd class="col-sm-9">@Model.Book.Title</dd>
+
+                <dt class="col-sm-3">Member</dt>
+                <dd class="col-sm-9">@Model.MemberEmail</dd>
+
+                <dt class="col-sm-3">Borrowed On</dt>
+                <dd class="col-sm-9">@Model.BorrowDate.ToString("MMMM dd, yyyy")</dd>
+
+                <dt class="col-sm-3">Due Date</dt>
+                <dd class="col-sm-9">@Model.DueDate.ToString("MMMM dd, yyyy")</dd>
+
+                <dt class="col-sm-3">Fine</dt>
+                <dd class="col-sm-9">
+                    @if (Model.FineAmount > 0)
+                    {
+                        <span class="text-danger fw-bold">$@Model.FineAmount.ToString("F2")</span>
+                        <br />
+                        <small class="text-muted">Overdue by @((DateTime.Now - Model.DueDate).Days) days</small>
+                    }
+                    else
+                    {
+                        <span class="text-success">No fine - returned on time!</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="Return">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <input type="submit" value="Confirm Return" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

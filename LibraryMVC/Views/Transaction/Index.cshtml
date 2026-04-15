@@ -1,0 +1,102 @@
+@model IEnumerable<LibraryMVC.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<div class="container mt-4">
+    <h1>Transactions</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Borrow a Book</a>
+    </p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <!-- Filter Tabs -->
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link @(ViewBag.CurrentFilter == "active" || ViewBag.CurrentFilter == null ? "active" : "")"
+               asp-action="Index" asp-route-filter="active">Active</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(ViewBag.CurrentFilter == "returned" ? "active" : "")"
+               asp-action="Index" asp-route-filter="returned">Returned</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(ViewBag.CurrentFilter == "overdue" ? "active" : "")"
+               asp-action="Index" asp-route-filter="overdue">Overdue</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(ViewBag.CurrentFilter == null && ViewBag.CurrentFilter != "active" && ViewBag.CurrentFilter != "returned" && ViewBag.CurrentFilter != "overdue" ? "active" : "")"
+               asp-action="Index">All</a>
+        </li>
+    </ul>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Book)</th>
+                <th>@Html.DisplayNameFor(model => model.MemberEmail)</th>
+                <th>@Html.DisplayNameFor(model => model.BorrowDate)</th>
+                <th>@Html.DisplayNameFor(model => model.DueDate)</th>
+                <th>@Html.DisplayNameFor(model => model.ReturnDate)</th>
+                <th>@Html.DisplayNameFor(model => model.FineAmount)</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.IsOverdue ? "table-warning" : "")">
+                    <td>@Html.DisplayFor(modelItem => item.Book.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MemberEmail)</td>
+                    <td>@item.BorrowDate.ToShortDateString()</td>
+                    <td>@item.DueDate.ToShortDateString()</td>
+                    <td>@(item.ReturnDate.HasValue ? item.ReturnDate.Value.ToShortDateString() : "Not returned")</td>
+                    <td>
+                        @if (item.FineAmount > 0)
+                        {
+                            <span class="text-danger">$@item.FineAmount.ToString("F2")</span>
+                        }
+                        else
+                        {
+                            @:None
+                        }
+                    </td>
+                    <td>
+                        @if (item.ReturnDate.HasValue)
+                        {
+                            <span class="badge bg-secondary">Returned</span>
+                        }
+                        else if (item.IsOverdue)
+                        {
+                            <span class="badge bg-danger">Overdue</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!item.ReturnDate.HasValue)
+                        {
+                            <a asp-action="Return" asp-route-id="@item.Id" class="btn btn-sm btn-success">Return</a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">No transactions found.</p>
+    }
+</div>

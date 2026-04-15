@@ -1,0 +1,96 @@
+@model IEnumerable<LibraryMVC.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<div class="container mt-4">
+    <h1>Books</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Book</a>
+    </p>
+
+    <!-- Search and Filter Form -->
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-5">
+                <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Search by title or author..." />
+            </div>
+            <div class="col-md-3">
+                <select name="genreFilter" class="form-control">
+                    <option value="">All Genres</option>
+                    @foreach (var genre in (List<string>)ViewBag.Genres)
+                    {
+                        <option value="@genre" selected="@(genre == ViewBag.GenreFilter)">@genre</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+            <div class="col-md-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </div>
+    </form>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Author)</th>
+                <th>@Html.DisplayNameFor(model => model.Genre)</th>
+                <th>@Html.DisplayNameFor(model => model.IsAvailable)</th>
+                <th>@Html.DisplayNameFor(model => model.Library)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+                    <td>
+                        @if (item.IsAvailable)
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Borrowed</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Library!.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @if (ViewBag.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewBag.SearchString" asp-route-genreFilter="@ViewBag.GenreFilter">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
