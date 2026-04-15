@@ -1,0 +1,46 @@
+@model LibraryMVC.Models.Transaction
+
+@{
+    ViewData["Title"] = "Borrow a Book";
+}
+
+<div class="container mt-4">
+    <h1>Borrow a Book</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="BookId" class="control-label"></label>
+                    <select asp-for="BookId" class="form-control" asp-items="ViewBag.AvailableBooks">
+                        <option value="">-- Select a Book --</option>
+                    </select>
+                    <span asp-validation-for="BookId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="MemberEmail" class="control-label"></label>
+                    <input asp-for="MemberEmail" class="form-control" />
+                    <span asp-validation-for="MemberEmail" class="text-danger"></span>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Loan Period:</strong> 14 days<br />
+                    <strong>Due Date:</strong> <span id="dueDateDisplay">@DateTime.Now.AddDays(14).ToString("MMMM dd, yyyy")</span><br />
+                    <strong>Fine Rate:</strong> $0.50 per day overdue
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Borrow Book" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

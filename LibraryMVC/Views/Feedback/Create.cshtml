@@ -1,0 +1,63 @@
+@model LibraryMVC.Models.Feedback
+
+@{
+    ViewData["Title"] = "Submit Feedback";
+}
+
+<div class="container mt-4">
+    <h1>Submit Feedback</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="BookId" class="control-label"></label>
+                    <select asp-for="BookId" class="form-control" asp-items="ViewBag.Books">
+                        <option value="">-- Select a Book --</option>
+                    </select>
+                    <span asp-validation-for="BookId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <input asp-for="UserEmail" class="form-control" />
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Comment" class="control-label"></label>
+                    <textarea asp-for="Comment" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Rating" class="control-label"></label>
+                    <select asp-for="Rating" class="form-control">
+                        <option value="">-- Select Rating --</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+
+                <div class="alert alert-info">
+                    Your feedback will be reviewed and approved before it appears publicly.
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit Feedback" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
