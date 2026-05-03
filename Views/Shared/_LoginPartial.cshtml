@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+@using LibraryManagementSystem.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(currentUser!);
+    var role = roles.FirstOrDefault() ?? "No Role";
+    var isLibrarian = User.IsInRole("Librarian");
+
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Role Badge -->
+        <span style="
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: @(isLibrarian ? "rgba(234, 179, 8, 0.2)" : "rgba(79, 70, 229, 0.2)");
+            color: @(isLibrarian ? "#fcd34d" : "#818cf8");
+            border: 1px solid @(isLibrarian ? "rgba(234,179,8,0.4)" : "rgba(79,70,229,0.4)");
+        ">
+            @(isLibrarian ? "📚 Librarian" : "👤 Member")
+        </span>
+
+        <!-- Username -->
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"
+           style="padding: 0;">
+            Hello @currentUser?.FullName!
+        </a>
+
+        <!-- Logout -->
+        <form asp-area="Identity" asp-page="/Account/Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+              style="display:inline;">
+            <button type="submit" class="btn btn-secondary btn-sm">Logout</button>
+        </form>
+    </div>
+}

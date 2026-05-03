@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Confirm Borrowing";
+}
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 50vh;">
+    <div class="glass-panel" style="max-width: 520px; width: 100%; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+        <h2 style="margin-bottom: 0.5rem; color: var(--primary-color);">Confirm Borrowing</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Please review the details before confirming.</p>
+
+        <div class="glass-panel" style="text-align: left; margin-bottom: 2rem; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--text-secondary);">Title</span>
+                <strong>@ViewBag.BookTitle</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--text-secondary);">Author</span>
+                <span>@ViewBag.BookAuthor</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--text-secondary);">Loan Period</span>
+                <span>14 days</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                <span style="color: var(--text-secondary);">Due Date</span>
+                <strong style="color: #818cf8;">@ViewBag.DueDate</strong>
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="BookISBN" value="@ViewBag.BookISBN" />
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                    ✅ Confirm Borrow
+                </button>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-secondary" style="padding: 0.75rem 2rem; font-size: 1rem;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

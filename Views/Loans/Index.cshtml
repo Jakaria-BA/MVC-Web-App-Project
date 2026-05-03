@@ -1,0 +1,120 @@
+@model IEnumerable<LibraryManagementSystem.Models.Loan>
+
+@{
+    ViewData["Title"] = User.IsInRole("Librarian") ? "Manage All Loans" : "My Loans";
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>@ViewData["Title"]</h2>
+    @if (!User.IsInRole("Librarian"))
+    {
+        <a asp-controller="Books" asp-action="Index" class="btn btn-primary">📚 Browse Books</a>
+    }
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div style="background-color: rgba(34, 197, 94, 0.2); color: #86efac; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div style="background-color: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.3);">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="glass-panel" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary);">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📖</div>
+        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">You haven't borrowed any books yet.</p>
+        <a asp-controller="Books" asp-action="Index" class="btn btn-primary">Browse Books</a>
+    </div>
+}
+else
+{
+    <div class="glass-panel table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    @if (User.IsInRole("Librarian"))
+                    {
+                        <th>Member</th>
+                    }
+                    <th>Book</th>
+                    <th>Date Borrowed</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Fine</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var isLate = item.ReturnDate == null && item.DueDate < DateTime.Now;
+                    <tr style="@(isLate ? "background-color: rgba(239, 68, 68, 0.1);" : "")">
+                        @if (User.IsInRole("Librarian"))
+                        {
+                            <td>
+                                @item.User?.FullName
+                                <br />
+                                <small style="color: var(--text-secondary)">@item.User?.Email</small>
+                            </td>
+                        }
+                        <td>
+                            <strong>@item.Book?.Title</strong>
+                            <br />
+                            <small style="color: var(--text-secondary)">by @item.Book?.Author</small>
+                        </td>
+                        <td>@item.LoanDate.ToShortDateString()</td>
+                        <td>
+                            <span style="@(isLate ? "color: #fca5a5; font-weight: bold;" : "")">
+                                @item.DueDate.ToShortDateString()
+                            </span>
+                        </td>
+                        <td>@(item.ReturnDate?.ToShortDateString() ?? "—")</td>
+                        <td>
+                            @if (item.FineAmount > 0)
+                            {
+                                <span style="color: #fca5a5; font-weight: bold;">$@item.FineAmount.ToString("0.00")</span>
+                            }
+                            else
+                            {
+                                <span style="color: var(--text-secondary);">$0.00</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.ReturnDate != null)
+                            {
+                                <span class="badge badge-success">Returned</span>
+                            }
+                            else if (isLate)
+                            {
+                                <span class="badge badge-danger">Overdue</span>
+                            }
+                            else
+                            {
+                                <span class="badge" style="background-color: rgba(79, 70, 229, 0.2); color: #818cf8;">Active</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.ReturnDate == null)
+                            {
+                                <form asp-action="Return" method="post" style="display: inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Return</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

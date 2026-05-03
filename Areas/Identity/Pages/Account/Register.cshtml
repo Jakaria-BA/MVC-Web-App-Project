@@ -1,0 +1,52 @@
+@page
+@model LibraryManagementSystem.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+    <div class="glass-panel" style="max-width: 480px; width: 100%;">
+        <h2 style="margin-bottom: 0.5rem; color: var(--primary-color);">Create Account</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Join Nexus Library as a Member</p>
+
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" style="color: #fca5a5; margin-bottom: 1rem;"></div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <label asp-for="Input.FullName" style="display:block; margin-bottom:0.4rem; color: var(--text-secondary); font-size:0.9rem;">Full Name</label>
+                <input asp-for="Input.FullName" class="form-control" autocomplete="name" placeholder="Your full name" />
+                <span asp-validation-for="Input.FullName" style="color:#fca5a5; font-size:0.85rem;"></span>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <label asp-for="Input.Email" style="display:block; margin-bottom:0.4rem; color: var(--text-secondary); font-size:0.9rem;">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="you@example.com" />
+                <span asp-validation-for="Input.Email" style="color:#fca5a5; font-size:0.85rem;"></span>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <label asp-for="Input.Password" style="display:block; margin-bottom:0.4rem; color: var(--text-secondary); font-size:0.9rem;">Password</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Min 6 characters" />
+                <span asp-validation-for="Input.Password" style="color:#fca5a5; font-size:0.85rem;"></span>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label asp-for="Input.ConfirmPassword" style="display:block; margin-bottom:0.4rem; color: var(--text-secondary); font-size:0.9rem;">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Repeat password" />
+                <span asp-validation-for="Input.ConfirmPassword" style="color:#fca5a5; font-size:0.85rem;"></span>
+            </div>
+
+            <button id="registerSubmit" type="submit" class="btn btn-primary" style="width:100%; padding: 0.75rem; font-size:1rem;">
+                Create Member Account
+            </button>
+        </form>
+
+        <p style="text-align:center; margin-top:1.5rem; color: var(--text-secondary);">
+            Already have an account? <a asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl" style="color: var(--primary-color);">Sign in</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

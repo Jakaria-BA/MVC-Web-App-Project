@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nexus Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="navbar">
+        <a class="nav-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            Nexus Library
+        </a>
+        <div class="nav-links">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" asp-area="" asp-controller="Books" asp-action="Index">Browse Books</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="nav-link" asp-area="" asp-controller="Loans" asp-action="Index">
+                    @(User.IsInRole("Librarian") ? "Manage Loans" : "My Loans")
+                </a>
+                <partial name="_LoginPartial" />
+            }
+            else
+            {
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a class="nav-link btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            }
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="glass-panel" style="min-height: 70vh;">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div style="background-color: rgba(34, 197, 94, 0.2); color: #86efac; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div style="background-color: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.3);">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-secondary); margin-top: auto;">
+        &copy; 2026 - Nexus Library System
+    </footer>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,64 @@
+@model LibraryManagementSystem.Models.Book
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h2>Delete Book</h2>
+
+<div class="glass-panel" style="max-width: 760px; margin-top: 2rem;">
+    <div style="display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 1.5rem; align-items: start;">
+        <div>
+            @if (!string.IsNullOrWhiteSpace(Model.CoverImageURL))
+            {
+                <img src="@Model.CoverImageURL" alt="Cover of @Model.Title" style="width: 160px; height: 230px; object-fit: cover; border-radius: 8px; border: 1px solid var(--surface-border);" />
+            }
+            else
+            {
+                <div style="width: 160px; height: 230px; border-radius: 8px; border: 1px solid var(--surface-border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                    No cover
+                </div>
+            }
+        </div>
+
+        <div>
+            <p style="color: #fca5a5; font-weight: 600; margin-top: 0;">This will permanently delete the book from the database.</p>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>ISBN</th>
+                        <td>@Model.ISBN</td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <th>Author</th>
+                        <td>@Model.Author</td>
+                    </tr>
+                    <tr>
+                        <th>Genre</th>
+                        <td>@Model.Genre</td>
+                    </tr>
+                    <tr>
+                        <th>Publication Year</th>
+                        <td>@Model.PublicationYear</td>
+                    </tr>
+                    <tr>
+                        <th>Copies</th>
+                        <td>@Model.AvailableCopies available / @Model.TotalCopies total</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <form asp-action="Delete" asp-route-id="@Model.ISBN" method="post" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.ISBN" />
+                <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

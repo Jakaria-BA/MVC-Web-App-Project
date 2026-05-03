@@ -1,0 +1,85 @@
+@model LibraryManagementSystem.Models.Book
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h2>Edit Book</h2>
+
+<div class="glass-panel" style="max-width: 900px; margin-top: 2rem;">
+    <form asp-action="Edit" asp-route-id="@Context.Request.RouteValues["id"]" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="color: var(--danger-color); margin-bottom: 1rem;"></div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem;">
+            <div>
+                <div class="form-group">
+                    <label asp-for="ISBN" class="form-label">ISBN</label>
+                    <input asp-for="ISBN" class="form-control" />
+                    <span asp-validation-for="ISBN" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Author" class="form-label">Author</label>
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CoverImageURL" class="form-label">Cover Image URL</label>
+                    <input asp-for="CoverImageURL" class="form-control" />
+                    <span asp-validation-for="CoverImageURL" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+            </div>
+
+            <div>
+                <div class="form-group">
+                    <label asp-for="Genre" class="form-label">Genre</label>
+                    <input asp-for="Genre" class="form-control" />
+                    <span asp-validation-for="Genre" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PublicationYear" class="form-label">Publication Year</label>
+                    <input asp-for="PublicationYear" class="form-control" type="number" />
+                    <span asp-validation-for="PublicationYear" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="TotalCopies" class="form-label">Total Copies</label>
+                    <input asp-for="TotalCopies" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="TotalCopies" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AvailableCopies" class="form-label">Available Copies</label>
+                    <input asp-for="AvailableCopies" class="form-control" type="number" min="0" />
+                    <span asp-validation-for="AvailableCopies" class="text-danger" style="color: var(--danger-color); font-size: 0.875rem;"></span>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.CoverImageURL))
+        {
+            <div style="margin-top: 1rem;">
+                <label class="form-label">Current Cover Preview</label>
+                <img src="@Model.CoverImageURL" alt="Cover of @Model.Title" style="display: block; width: 140px; height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid var(--surface-border);" />
+            </div>
+        }
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to Books</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
