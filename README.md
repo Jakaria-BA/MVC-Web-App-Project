@@ -49,3 +49,16 @@ Migrations are used to create and update database tables.
 dotnet restore
 dotnet ef database update
 dotnet run
+
+---
+
+## 👥 Group Members
+
+| No. | Name | Role / Contribution |
+|----|------|---------------------|
+| 1 | Jakaria Ahmed | Backend development, database setup, MVC structure |
+| 2 | Prantik Dutta Utsho | Frontend design and UI development |
+| 3 | Emon | Testing, debugging, and validation |
+| 4 | Seyam | Documentation and presentation |
+
+---
