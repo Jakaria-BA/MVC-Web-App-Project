@@ -49,6 +49,7 @@ Migrations are used to create and update database tables.
 dotnet restore
 dotnet ef database update
 dotnet run
+```
 
 <h2>👥 Group Members</h2>
 
