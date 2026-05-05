@@ -53,12 +53,13 @@ dotnet run
 ---
 
 ## 👥 Group Members
+## 👥 Group Members
 
-| No. | Name | Role / Contribution |
-|----|------|---------------------|
-| 1 | Jakaria Ahmed | Backend development, database setup, MVC structure |
-| 2 | Prantik Dutta Utsho | Frontend design and UI development |
-| 3 | Emon | Testing, debugging, and validation |
-| 4 | Seyam | Documentation and presentation |
+| No. | Name                    | Role / Contribution                                   |
+|----:|-------------------------|------------------------------------------------------|
+| 1   | Jakaria Ahmed           | Backend development, database setup, MVC architecture |
+| 2   | Prantik Dutta Utsho     | Frontend design and UI development                   |
+| 3   | Emon                    | Testing, debugging, and validation                   |
+| 4   | Seyam                   | Documentation and presentation                       |
 
 ---
