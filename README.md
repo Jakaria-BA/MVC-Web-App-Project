@@ -50,8 +50,6 @@ dotnet restore
 dotnet ef database update
 dotnet run
 
----
-
 <h2>👥 Group Members</h2>
 
 <table>
