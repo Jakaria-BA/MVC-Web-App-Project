@@ -52,14 +52,36 @@ dotnet run
 
 ---
 
-## 👥 Group Members
-## 👥 Group Members
+<h2>👥 Group Members</h2>
 
-| No. | Name                    | Role / Contribution                                   |
-|----:|-------------------------|------------------------------------------------------|
-| 1   | Jakaria Ahmed           | Backend development, database setup, MVC architecture |
-| 2   | Prantik Dutta Utsho     | Frontend design and UI development                   |
-| 3   | Emon                    | Testing, debugging, and validation                   |
-| 4   | Seyam                   | Documentation and presentation                       |
-
----
+<table>
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>Role / Contribution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">1</td>
+      <td>Jakaria Ahmed</td>
+      <td>Backend development, database setup, MVC architecture</td>
+    </tr>
+    <tr>
+      <td align="center">2</td>
+      <td>Prantik Dutta Utsho</td>
+      <td>Frontend design and UI development</td>
+    </tr>
+    <tr>
+      <td align="center">3</td>
+      <td>Emon</td>
+      <td>Testing, debugging, and validation</td>
+    </tr>
+    <tr>
+      <td align="center">4</td>
+      <td>Seyam</td>
+      <td>Documentation and presentation</td>
+    </tr>
+  </tbody>
+</table>
